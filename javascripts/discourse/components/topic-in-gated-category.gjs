@@ -4,27 +4,29 @@ import { computed } from "@ember/object";
 import { tagName } from "@ember-decorators/component";
 import DButton from "discourse/components/d-button";
 import routeAction from "discourse/helpers/route-action";
-import { i18n } from "discourse-i18n";
 import { ajax } from "discourse/lib/ajax";
+import { i18n } from "discourse-i18n";
 
 @tagName("")
 export default class TopicInGatedCategory extends Component {
   hidden = true;
 
   // 解析启用的分类 ID 列表
-  enabledCategories = settings.enabled_categories
-    ?.split("|")
-    .map((id) => parseInt(id, 10))
-    .filter((id) => id) || [];
+  enabledCategories =
+    settings.enabled_categories
+      ?.split("|")
+      .map((id) => parseInt(id, 10))
+      .filter((id) => id) || [];
 
   // 解析启用的标签列表
   enabledTags = settings.enabled_tags?.split("|").filter(Boolean) || [];
 
   // 解析全局启用的用户组 ID 列表
-  enabledGroups = settings.enabled_groups
-    ?.split("|")
-    .map((id) => parseInt(id, 10))
-    .filter((id) => !isNaN(id)) || [];
+  enabledGroups =
+    settings.enabled_groups
+      ?.split("|")
+      .map((id) => parseInt(id, 10))
+      .filter((id) => !isNaN(id)) || [];
 
   // 多分类-用户组映射缓存
   _categoryGroupMappings = {};
@@ -126,9 +128,7 @@ export default class TopicInGatedCategory extends Component {
     const mappedGroupId = this._getEffectiveGroupId();
     if (mappedGroupId) {
       // 有分类映射：检查用户是否在该映射组中
-      return this.currentUser.groups.some(
-        (g) => g.id === mappedGroupId
-      );
+      return this.currentUser.groups.some((g) => g.id === mappedGroupId);
     }
 
     // 无映射：检查用户是否在全局 enabled_groups 中
@@ -193,23 +193,34 @@ export default class TopicInGatedCategory extends Component {
   }
 
   get subheadingText() {
-    return settings.subheading_text_custom || i18n(themePrefix("subheading_text"));
+    return (
+      settings.subheading_text_custom || i18n(themePrefix("subheading_text"))
+    );
   }
 
   get groupSubheadingText() {
-    return settings.group_subheading_text_custom || i18n(themePrefix("group_subheading_text"));
+    return (
+      settings.group_subheading_text_custom ||
+      i18n(themePrefix("group_subheading_text"))
+    );
   }
 
   get signupCtaLabel() {
-    return settings.signup_cta_label_custom || i18n(themePrefix("signup_cta_label"));
+    return (
+      settings.signup_cta_label_custom || i18n(themePrefix("signup_cta_label"))
+    );
   }
 
   get groupCtaLabel() {
-    return settings.group_cta_label_custom || i18n(themePrefix("group_cta_label"));
+    return (
+      settings.group_cta_label_custom || i18n(themePrefix("group_cta_label"))
+    );
   }
 
   get loginCtaLabel() {
-    return settings.login_cta_label_custom || i18n(themePrefix("login_cta_label"));
+    return (
+      settings.login_cta_label_custom || i18n(themePrefix("login_cta_label"))
+    );
   }
 
   // 构建 CTA 按钮的 href 地址
@@ -221,7 +232,10 @@ export default class TopicInGatedCategory extends Component {
 
   // 订阅计划列表数据
   get subscriptionPlans() {
-    if (!settings.show_subscription_plans || !settings.plan_display_product_id) {
+    if (
+      !settings.show_subscription_plans ||
+      !settings.plan_display_product_id
+    ) {
       return [];
     }
     return this._plansCache || [];
@@ -229,24 +243,30 @@ export default class TopicInGatedCategory extends Component {
 
   // 获取订阅计划数据
   async fetchSubscriptionPlans() {
-    if (!settings.show_subscription_plans || !settings.plan_display_product_id) {
+    if (
+      !settings.show_subscription_plans ||
+      !settings.plan_display_product_id
+    ) {
       return;
     }
     try {
-      const response = await ajax("/s/" + settings.plan_display_product_id + ".json", {
-        method: "GET"
-      });
+      const response = await ajax(
+        "/s/" + settings.plan_display_product_id + ".json",
+        {
+          method: "GET",
+        }
+      );
       if (response && response.plans) {
         this._plansCache = response.plans.map((plan) => ({
           name: plan.name || plan.title || "",
           type: plan.type || "",
           price: plan.price ? (plan.price / 100).toFixed(2) : "0.00",
-          currency: plan.currency || "USD"
+          currency: plan.currency || "USD",
         }));
       }
-    } catch (error) {
+    } catch {
       // API 请求失败时静默处理，不影响遮罩显示
-      console.warn("[GatedTopic] Failed to fetch subscription plans:", error);
+      // API 请求失败时静默处理，不影响遮罩显示
       this._plansCache = [];
     }
   }
@@ -283,12 +303,14 @@ export default class TopicInGatedCategory extends Component {
             {{/if}}
           </p>
 
-          {{!-- 订阅计划价格列表 --}}
+          {{! 订阅计划价格列表 }}
           {{#if this.subscriptionPlans}}
             <ul class="gated-plan-list">
               {{#each this.subscriptionPlans as |plan|}}
                 <li class="gated-plan-item">
-                  {{plan.name}} · {{plan.price}}{{plan.currency}}
+                  {{plan.name}}
+                  ·
+                  {{plan.price}}{{plan.currency}}
                 </li>
               {{/each}}
             </ul>
@@ -325,7 +347,7 @@ export default class TopicInGatedCategory extends Component {
             {{/if}}
           </div>
 
-          {{!-- D3: 管理员配置状态面板 --}}
+          {{! D3: 管理员配置状态面板 }}
           {{#if this.currentUser.admin}}
             <details class="gated-category-admin-info">
               <summary>管理员配置状态</summary>
@@ -334,9 +356,12 @@ export default class TopicInGatedCategory extends Component {
                 <li>启用标签: {{this.enabledTags}}</li>
                 <li>启用组: {{this.enabledGroups}}</li>
                 <li>分类组映射: {{this._mappingKeys}}</li>
-                <li>skip_gate_for_logged_in: {{settings.skip_gate_for_logged_in}}</li>
-                <li>subscription_product_id: {{settings.subscription_product_id}}</li>
-                <li>category_group_mappings: {{settings.category_group_mappings}}</li>
+                <li>skip_gate_for_logged_in:
+                  {{settings.skip_gate_for_logged_in}}</li>
+                <li>subscription_product_id:
+                  {{settings.subscription_product_id}}</li>
+                <li>category_group_mappings:
+                  {{settings.category_group_mappings}}</li>
               </ul>
             </details>
           {{/if}}
@@ -345,4 +370,3 @@ export default class TopicInGatedCategory extends Component {
     {{/if}}
   </template>
 }
-
