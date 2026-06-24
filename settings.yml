@@ -1,4 +1,4 @@
-﻿enabled_categories:
+enabled_categories:
   type: list
   list_type: category
   default: ""
@@ -18,7 +18,6 @@ group_custom_button_link:
   default: ""
   description: "Optionally specify a custom URL for the call-to-action button for groups."
 
-# ——— 遮罩内容展示 ———
 content_visible_height:
   type: string
   default: "50"
@@ -32,7 +31,7 @@ show_subscription_plans:
 plan_display_product_id:
   type: string
   default: ""
-  description: "要在遮罩中展示价格的 Discourse Subscriptions 产品 ID（填写后从 /s/:id API 拉取计划列表，留空则不显示价格）"
+  description: "要在遮罩中展示价格的 Discourse Subscriptions 产品 ID"
 
 toc_dim_opacity:
   type: string
@@ -42,9 +41,8 @@ toc_dim_opacity:
 gate_overlay_bg_color:
   type: string
   default: "#EAF3FB"
-  description: "遮罩背景色（支持任意 CSS 颜色值，例如 #EAF3FB 或 rgba(234,243,251,1)）"
+  description: "遮罩背景色（支持任意 CSS 颜色值）"
 
-# ——— 文案配置（D1：在后台直接可改，不需要碰代码）———
 heading_text_custom:
   type: string
   default: "此内容仅限订阅会员查看"
@@ -75,29 +73,27 @@ login_cta_label_custom:
   default: "已有账户？登录"
   description: "未登录用户看到的次级登录链接文案"
 
-# ——— 订阅跳转 ———
 subscription_page_url:
   type: string
   default: "/s"
-  description: "订阅页面 URL，CTA 按钮跳转目标（默认 /s 为 Discourse Subscriptions 插件主页）"
+  description: "订阅页面 URL，CTA 按钮跳转目标"
 
 subscription_product_id:
   type: string
   default: ""
-  description: "（可选）若填写 Stripe Product ID，CTA 按钮将直接跳转至 /s/:product_id，跳过产品列表页"
+  description: "若填写 Stripe Product ID，CTA 按钮将直接跳转至 /s/:product_id"
 
 redirect_after_login:
   type: string
   default: "true"
-  description: "用户登录后是否自动跳回触发遮罩的原帖子页面（true = 跳回原页，false = 跳到首页）"
+  description: "用户登录后是否自动跳回触发遮罩的原帖子页面"
 
 skip_gate_for_logged_in:
   type: string
   default: "false"
-  description: "C1 开关：是否允许所有已登录用户绕过遮罩（true = 已登录即可看内容；false = 必须在 enabled_groups 中才能查看）"
+  description: "C1 开关：是否允许所有已登录用户绕过遮罩"
 
-# ——— 多分类-多用户组映射（D2）———
 category_group_mappings:
   type: string
   default: ""
-  description: "多分类对应不同用户组的映射配置，格式：category_id:group_id|category_id:group_id，例如：12:5|15:8。留空则统一使用 enabled_groups 设置"
+  description: "多分类对应不同用户组的映射配置，格式：category_id:group_id|category_id:group_id"
