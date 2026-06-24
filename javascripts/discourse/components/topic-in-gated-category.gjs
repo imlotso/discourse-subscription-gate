@@ -213,17 +213,10 @@ export default class TopicInGatedCategory extends Component {
   }
 
   // 构建 CTA 按钮的 href 地址
+  // 注意：group CTA 按钮仅在 group_custom_button_link 配置时才渲染
+  // subscription_product_id 和 subscription_page_url 用于未登录用户的注册/登录流程
   get ctaHref() {
-    // 优先使用 subscription_product_id 直接跳转
-    if (settings.subscription_product_id) {
-      return "/s/" + settings.subscription_product_id;
-    }
-    // 其次使用 subscription_page_url
-    if (settings.subscription_page_url) {
-      return settings.subscription_page_url;
-    }
-    // 最后回退到 group_custom_button_link
-    return settings.group_custom_button_link || "/s";
+    return settings.group_custom_button_link || null;
   }
 
   // 订阅计划列表数据
@@ -352,3 +345,4 @@ export default class TopicInGatedCategory extends Component {
     {{/if}}
   </template>
 }
+
