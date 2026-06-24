@@ -1,5 +1,5 @@
-.custom-gated-topic-container {
-  background: var(--tertiary-low);
+﻿.custom-gated-topic-container {
+  background: var(--gated-topic-bg, var(--tertiary-low));
   border-top: 5px solid var(--tertiary);
   position: fixed;
   width: 100%;
@@ -49,12 +49,8 @@
   overflow-y: hidden;
   height: 100%;
 
-  .topic-navigation {
-    visibility: hidden;
-  }
-
   .post-stream {
-    max-height: 150vh;
+    max-height: var(--gated-content-height, 50vh);
     overflow: hidden;
   }
 
@@ -79,5 +75,44 @@
         rgb(255, 255, 255, 1) 100%
       );
     }
+  }
+}
+
+// 订阅计划价格列表样式
+.gated-plan-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.8rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.gated-plan-item {
+  background: var(--primary-very-low);
+  border: 1px solid var(--primary-low);
+  border-radius: 4px;
+  padding: 0.3rem 0.8rem;
+  font-size: var(--font-up-1);
+  font-weight: 600;
+}
+
+// 管理员配置状态面板样式
+.gated-category-admin-info {
+  margin-top: 1rem;
+  font-size: var(--font-down-1);
+  color: var(--primary-medium);
+  border: 1px dashed var(--primary-low);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  ul {
+    margin: 0.5rem 0 0 1rem;
   }
 }
