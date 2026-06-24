@@ -83,14 +83,14 @@ export default class TopicInGatedCategory extends Component {
     if (settings.content_visible_height != null) {
       document.documentElement.style.setProperty(
         "--gated-content-height",
-        settings.content_visible_height + "vh"
+        parseInt(settings.content_visible_height, 10) + "vh"
       );
     }
     // A2: 设置目录透明度 CSS 变量
     if (settings.toc_dim_opacity != null) {
       document.documentElement.style.setProperty(
         "--toc-dim-opacity",
-        (settings.toc_dim_opacity / 100).toString()
+        (parseInt(settings.toc_dim_opacity, 10) / 100).toString()
       );
     }
   }
@@ -139,7 +139,7 @@ export default class TopicInGatedCategory extends Component {
 
   recalculate() {
     // C1 开关：已登录用户直接绕过遮罩
-    if (settings.skip_gate_for_logged_in && this.currentUser) {
+    if (settings.skip_gate_for_logged_in === "true" && this.currentUser) {
       return;
     }
 
@@ -234,6 +234,7 @@ export default class TopicInGatedCategory extends Component {
   get subscriptionPlans() {
     if (
       !settings.show_subscription_plans ||
+      settings.show_subscription_plans === "false" ||
       !settings.plan_display_product_id
     ) {
       return [];
@@ -245,6 +246,7 @@ export default class TopicInGatedCategory extends Component {
   async fetchSubscriptionPlans() {
     if (
       !settings.show_subscription_plans ||
+      settings.show_subscription_plans === "false" ||
       !settings.plan_display_product_id
     ) {
       return;
@@ -273,7 +275,7 @@ export default class TopicInGatedCategory extends Component {
 
   // 登录成功后跳回原页面
   handleRedirectAfterLogin() {
-    if (settings.redirect_after_login !== false) {
+    if (settings.redirect_after_login !== "false") {
       // 记录触发遮罩前的 URL，登录后跳回
       sessionStorage.setItem(
         "gated_topic_redirect_url",
