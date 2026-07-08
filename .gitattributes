@@ -1,0 +1,9 @@
+# Force LF line endings for all source files on Windows
+# Prevents CRLF issues in Discourse theme components
+* text=auto eol=lf
+*.yml text eol=lf
+*.scss text eol=lf
+*.gjs text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.rb text eol=lf
