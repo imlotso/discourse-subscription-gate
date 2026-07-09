@@ -333,6 +333,10 @@ export default class TopicInGatedCategory extends Component {
     return !!settings.info_topic_id;
   }
 
+  get _mappingKeys() {
+    return Object.keys(this._categoryGroupMappings || {});
+  }
+
   get topicId() {
     // 从 outletArgs 获取当前 topic 的 id
     if (this.args && this.args.model) {
@@ -360,11 +364,13 @@ export default class TopicInGatedCategory extends Component {
           <div class="custom-gated-topic-content--cta">
             {{#if this.showGroupGate}}
               <div class="custom-gated-topic-content--cta__group">
-                <DButton
-                  @href={{this.ctaHref}}
-                  class="btn-primary btn-large"
-                  @translatedLabel={{this.groupCtaLabel}}
-                />
+                {{#if settings.group_custom_button_link}}
+                  <DButton
+                    @href={{settings.group_custom_button_link}}
+                    class="btn-primary btn-large"
+                    @translatedLabel={{this.groupCtaLabel}}
+                  />
+                {{/if}}
                 {{#if this.showInfoButton}}
                   <DButton
                     @href={{this.infoButtonHref}}

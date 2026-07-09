@@ -59,7 +59,7 @@ RSpec.describe "Gated topics with groups" do
 
     before do
       second_group.add(second_group_member)
-      theme.update_setting(:enabled_groups, "\#{group.id}|\#{second_group.id}")
+      theme.update_setting(:enabled_groups, "#{group.id}|#{second_group.id}")
       theme.save!
     end
 
@@ -112,7 +112,7 @@ RSpec.describe "Gated topics with groups" do
       expect(gated_topic).to have_gate
       expect(gated_topic).to have_group_gate
       expect(gated_topic).to have_info_button
-      expect(gated_topic).to have_info_button_href("/t/-/\#{info_topic.id}")
+      expect(gated_topic).to have_info_button_href("/t/-/#{info_topic.id}")
     end
   end
 
@@ -147,7 +147,6 @@ RSpec.describe "Gated topics with topic ids" do
     before do
       theme.update_setting(:enabled_topic_ids, topic.id.to_s)
       theme.save!
-      theme.save!
     end
 
     it "shows gate for anonymous user" do
@@ -176,7 +175,7 @@ RSpec.describe "Gated topics with topic ids" do
     fab!(:out_range_topic) { Fabricate(:topic) }
 
     before do
-      theme.update_setting(:enabled_topic_id_ranges, "\#{in_range_topic.id}-\#{in_range_topic.id}")
+      theme.update_setting(:enabled_topic_id_ranges, "#{in_range_topic.id}-#{in_range_topic.id}")
       theme.save!
     end
 

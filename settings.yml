@@ -47,7 +47,7 @@ content_visible_height:
 
 show_subscription_plans:
   type: string
-  default: "false"
+  default: "true"
   description: "是否在遮罩 CTA 区域展示订阅计划列表"
 
 plan_display_product_id:
