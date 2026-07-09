@@ -1,4 +1,4 @@
-﻿.custom-gated-topic-container {
+.custom-gated-topic-container {
   background: var(--gated-topic-bg, var(--tertiary-low));
   border-top: 5px solid var(--tertiary);
   position: fixed;
@@ -67,12 +67,12 @@
       width: 100%;
       height: 100%;
       z-index: 50;
-      background: rgb(255, 255, 255);
+      background: rgb(var(--secondary-rgb));
       background: linear-gradient(
         180deg,
-        rgb(255, 255, 255, 0) 10%,
-        rgb(255, 255, 255, 0.6) 60%,
-        rgb(255, 255, 255, 1) 100%
+        rgba(var(--secondary-rgb), 0) 0%,
+        rgba(var(--secondary-rgb), 0.3) 40%,
+        rgba(var(--secondary-rgb), 1) 100%
       );
     }
   }
