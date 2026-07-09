@@ -183,8 +183,19 @@ export default class TopicInGatedCategory extends Component {
     return !this.hidden;
   }
 
+  // 判断是否显示 group CTA 分支
+  // 条件：已登录 + 当前分类有有效的组限制（映射组或全局 enabled_groups）+ 用户不在有效组中
   get showGroupGate() {
-    return this.currentUser && this.enabledGroups.length > 0;
+    if (!this.currentUser) {
+      return false;
+    }
+    // 有分类映射：检查映射组是否存在
+    const mappedGroupId = this._getEffectiveGroupId();
+    if (mappedGroupId) {
+      return true;
+    }
+    // 无映射：检查全局 enabled_groups 是否配置
+    return this.enabledGroups.length > 0;
   }
 
   // 文案优先级：settings.custom 优先，fallback 到 i18n
