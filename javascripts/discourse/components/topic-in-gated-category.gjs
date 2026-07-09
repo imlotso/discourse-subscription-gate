@@ -236,18 +236,10 @@ export default class TopicInGatedCategory extends Component {
 
   // 构建 CTA 按钮的 href 地址
   // 构建 group CTA 按钮的 href 地址
-  // 优先级：group_custom_button_link > subscription_product_id > subscription_page_url > null
+  // 与官方行为一致：仅当 group_custom_button_link 配置时才渲染按钮
+  // subscription_product_id / subscription_page_url 留给未登录用户注册流程使用
   get ctaHref() {
-    if (settings.group_custom_button_link) {
-      return settings.group_custom_button_link;
-    }
-    if (settings.subscription_product_id) {
-      return "/s/" + settings.subscription_product_id;
-    }
-    if (settings.subscription_page_url) {
-      return settings.subscription_page_url;
-    }
-    return null;
+    return settings.group_custom_button_link || null;
   }
 
   // 订阅计划列表数据
