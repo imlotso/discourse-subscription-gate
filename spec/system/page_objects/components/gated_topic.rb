@@ -14,23 +14,35 @@ module PageObjects
       end
 
       def has_signup_gate?
-        has_css?("#{SELECTOR} .custom-gated-topic-content--cta__signup")
+        has_css?("\#{SELECTOR} .custom-gated-topic-content--cta__signup")
       end
 
       def has_group_gate?
-        has_css?("#{SELECTOR} .custom-gated-topic-content--cta__group")
+        has_css?("\#{SELECTOR} .custom-gated-topic-content--cta__group")
       end
 
       def has_group_cta_button?
-        has_css?("#{SELECTOR} .custom-gated-topic-content--cta__group .btn-primary")
+        has_css?("\#{SELECTOR} .custom-gated-topic-content--cta__group .btn-primary")
       end
 
       def has_no_group_cta_button?
-        has_no_css?("#{SELECTOR} .custom-gated-topic-content--cta__group .btn-primary")
+        has_no_css?("\#{SELECTOR} .custom-gated-topic-content--cta__group .btn-primary")
       end
 
       def has_group_cta_href?(href)
-        has_css?("#{SELECTOR} .custom-gated-topic-content--cta__group a[href='#{href}']")
+        has_css?("\#{SELECTOR} .custom-gated-topic-content--cta__group a[href='\#{href}']")
+      end
+
+      def has_info_button?
+        has_css?("\#{SELECTOR} .custom-gated-topic-content--cta__group .info-button")
+      end
+
+      def has_no_info_button?
+        has_no_css?("\#{SELECTOR} .custom-gated-topic-content--cta__group .info-button")
+      end
+
+      def has_info_button_href?(href)
+        has_css?("\#{SELECTOR} .custom-gated-topic-content--cta__group a[href='\#{href}']")
       end
     end
   end

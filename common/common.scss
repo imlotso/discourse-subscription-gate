@@ -41,6 +41,10 @@
 
     &__group {
       margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
     }
   }
 }
@@ -83,27 +87,20 @@
         rgb(var(--secondary-rgb), 1) 100%
       );
     }
+
+    // 上方正文区域灰黑遮罩层（可配置透明度）
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--gated-content-height, 50vh);
+      background: rgb(0, 0, 0, var(--top-content-overlay-opacity, 0.55));
+      z-index: 51;
+      pointer-events: none;
+    }
   }
-}
-
-// 订阅计划价格列表样式
-.gated-plan-list {
-  list-style: none;
-  padding: 0;
-  margin: 0.8rem 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
-}
-
-.gated-plan-item {
-  background: var(--primary-very-low);
-  border: 1px solid var(--primary-low);
-  border-radius: 4px;
-  padding: 0.3rem 0.8rem;
-  font-size: var(--font-up-1);
-  font-weight: 600;
 }
 
 // 管理员配置状态面板样式
@@ -123,4 +120,14 @@
   ul {
     margin: 0.5rem 0 0 1rem;
   }
+}
+
+// 次按钮样式
+.info-button {
+  background: transparent;
+  color: var(--primary-medium);
+  border: 1px solid var(--primary-low);
+  border-radius: 4px;
+  font-size: var(--font-down-1);
+  padding: 0.25rem 0.8rem;
 }

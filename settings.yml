@@ -18,6 +18,28 @@ group_custom_button_link:
   default: ""
   description: "Optionally specify a custom URL for the call-to-action button for groups."
 
+# 新增：topic id 控制
+enabled_topic_ids:
+  type: string
+  default: ""
+  description: "指定 topic id 列表，使用 | 分隔，例如：103|105|110"
+
+enabled_topic_id_ranges:
+  type: string
+  default: ""
+  description: "指定 topic id 区间，格式：start-end，多个区间用 | 分隔，例如：100-120|200-220"
+
+info_topic_id:
+  type: string
+  default: ""
+  description: "次按钮「查看订阅说明」跳转的目标 topic id"
+
+top_content_overlay_opacity:
+  type: string
+  default: "55"
+  description: "上方正文区域遮罩透明度百分比（0-100），例如 55 表示 0.55"
+
+# 遮罩内容展示
 content_visible_height:
   type: string
   default: "50"
@@ -25,24 +47,25 @@ content_visible_height:
 
 show_subscription_plans:
   type: string
-  default: "true"
-  description: "是否在遮罩 CTA 区域展示订阅计划列表（名称 + 类型 + 价格）"
+  default: "false"
+  description: "是否在遮罩 CTA 区域展示订阅计划列表"
 
 plan_display_product_id:
   type: string
   default: ""
-  description: "要在遮罩中展示价格的 Discourse Subscriptions 产品 ID"
+  description: "Discourse Subscriptions 产品 ID，用于展示价格"
 
 toc_dim_opacity:
   type: string
   default: "40"
-  description: "遮罩激活时，右侧目录（topic-navigation）的透明度百分比，默认 40%"
+  description: "遮罩激活时，右侧目录的透明度百分比，默认 40%"
 
 gate_overlay_bg_color:
   type: string
   default: "#EAF3FB"
-  description: "遮罩背景色（支持任意 CSS 颜色值）"
+  description: "遮罩背景色"
 
+# 文案配置
 heading_text_custom:
   type: string
   default: "此内容仅限订阅会员查看"
@@ -73,6 +96,12 @@ login_cta_label_custom:
   default: "已有账户？登录"
   description: "未登录用户看到的次级登录链接文案"
 
+info_button_label_custom:
+  type: string
+  default: "查看订阅说明"
+  description: "次按钮「查看订阅说明」的文案"
+
+# 订阅跳转
 subscription_page_url:
   type: string
   default: "/s"
@@ -93,6 +122,7 @@ skip_gate_for_logged_in:
   default: "false"
   description: "C1 开关：是否允许所有已登录用户绕过遮罩"
 
+# 多分类-多用户组映射
 category_group_mappings:
   type: string
   default: ""
