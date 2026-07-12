@@ -7,4 +7,6 @@ on:
 
 jobs:
   ci:
+    permissions:
+      contents: write
     uses: discourse/.github/.github/workflows/create-d-compat-branch.yml@v1
