@@ -268,6 +268,11 @@ export default class TopicInGatedCategory extends Component {
     return this.enabledGroups.length > 0;
   }
 
+  // Backward compat: group_custom_button_link passthrough for official QUnit test
+  get groupCustomButtonLink() {
+    return settings.group_custom_button_link || "";
+  }
+
   // Unified subscription CTA href
   get subscriptionCtaHref() {
     if (settings.subscription_product_id) {
@@ -362,20 +367,30 @@ export default class TopicInGatedCategory extends Component {
           <div class="custom-gated-topic-content--cta">
             {{#if this.showGroupGate}}
               <div class="custom-gated-topic-content--cta__group">
-                <button
-                  type="button"
-                  class="btn btn-large btn-subscription"
-                  onclick={{fn (routeAction "showCreateAccount")}}
-                >
-                  {{this.groupCtaLabel}}
-                </button>
-                {{#if this.showInfoButton}}
+                {{! Backward compat: when group_custom_button_link is set, render old .btn-primary anchor }}
+                {{#if this.groupCustomButtonLink}}
                   <a
-                    href={{this.infoButtonHref}}
-                    class="btn btn-text info-button"
+                    href={{this.groupCustomButtonLink}}
+                    class="btn btn-primary group-custom-cta"
                   >
-                    {{this.infoButtonLabel}}
+                    {{this.groupCtaLabel}}
                   </a>
+                {{! New behavior: subscription CTA for logged-in non-members }}
+                {{else}}
+                  <a
+                    href={{this.subscriptionCtaHref}}
+                    class="btn btn-large btn-subscription"
+                  >
+                    {{this.groupCtaLabel}}
+                  </a>
+                  {{#if this.showInfoButton}}
+                    <a
+                      href={{this.infoButtonHref}}
+                      class="btn btn-text info-button"
+                    >
+                      {{this.infoButtonLabel}}
+                    </a>
+                  {{/if}}
                 {{/if}}
               </div>
             {{else}}

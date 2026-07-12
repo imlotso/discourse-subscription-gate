@@ -30,11 +30,11 @@ module PageObjects
       end
 
       def has_subscription_cta_button?
-        has_css?("#{SELECTOR} .custom-gated-topic-content--cta__group .btn-primary")
+        has_css?("#{SELECTOR} .custom-gated-topic-content--cta__group .btn-subscription")
       end
 
       def has_no_subscription_cta_button?
-        has_no_css?("#{SELECTOR} .custom-gated-topic-content--cta__group .btn-primary")
+        has_no_css?("#{SELECTOR} .custom-gated-topic-content--cta__group .btn-subscription")
       end
     end
   end

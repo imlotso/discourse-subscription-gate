@@ -7,7 +7,7 @@ enabled_tags:
   type: list
   list_type: tag
   default: ""
-  description: "需要订阅才能查看完整内容的标签"
+  description: "需要订阅才能查看内容的标签"
 enabled_groups:
   type: list
   list_type: group
@@ -32,37 +32,37 @@ exempt_topic_ids:
 content_visible_height:
   type: string
   default: "50"
-  description: "帖子内容在遮罩下可见的高度百分比（相对视口高度 vh），默认 50"
+  description: "帖子内容在遮盖下可见的高度百分比（相对视口高度 vh），默认 50"
 
 top_content_overlay_opacity:
   type: string
   default: "55"
-  description: "上方正文区域遮罩透明度百分比（0-100），例如 55 表示 0.55"
+  description: "上方正文区域遮盖透明度百分比（0-100），例如 55 表示 0.55"
 
 toc_dim_opacity:
   type: string
   default: "40"
-  description: "遮罩激活时，右侧目录的透明度百分比，默认 40%"
+  description: "遮盖激活时，右侧目录的透明度百分比，默认 40%"
 
 gate_overlay_bg_color:
   type: string
   default: "#EAF3FB"
-  description: "遮罩底部面板的背景色"
+  description: "遮盖底部面板的背景色"
 
 heading_text_custom:
   type: string
   default: "此内容仅限订阅会员查看"
-  description: "遮罩标题文字"
+  description: "遮盖标题文字"
 
 subheading_text_custom:
   type: string
   default: "订阅后即可阅读全部内容。"
-  description: "遮罩副标题（未登录用户看到）"
+  description: "遮盖副标题（未登录用户看到）"
 
 group_subheading_text_custom:
   type: string
   default: "您需要有效订阅才能查看此内容。"
-  description: "遮罩副标题（已登录但未订阅用户看到）"
+  description: "遮盖副标题（已登录但未订阅用户看到）"
 
 signup_cta_label_custom:
   type: string
@@ -97,14 +97,19 @@ subscription_product_id:
 redirect_after_login:
   type: string
   default: "true"
-  description: "用户登录后是否自动跳回触发遮罩的原帖子页面"
+  description: "用户登录后是否自动跳回触发遮盖的原帖子页面"
 
 skip_gate_for_logged_in:
   type: string
   default: "false"
-  description: "是否允许所有已登录用户绕过遮罩"
+  description: "是否允许所有已登录用户绕过遮盖"
 
 category_group_mappings:
   type: string
   default: ""
   description: "多分类对应不同用户组的映射配置，格式：category_id:group_id|category_id:group_id"
+
+group_custom_button_link:
+  type: string
+  default: ""
+  description: "[已弃用] 已登录未订阅用户自定义按钮跳转链接，保留以兼容官方 QUnit 测试"
