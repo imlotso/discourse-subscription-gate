@@ -396,7 +396,7 @@ export default class TopicInGatedCategory extends Component {
                 {{else if this.showSubscriptionCta}}
                   <DButton
                     @href={{this.subscriptionCtaHref}}
-                    class="btn-primary btn-large subscription-cta-button"
+                    class="btn btn-large subscription-cta-button"
                     @translatedLabel={{this.groupCtaLabel}}
                   />
                 {{/if}}

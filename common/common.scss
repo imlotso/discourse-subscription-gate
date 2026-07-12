@@ -132,7 +132,23 @@
   padding: 0.25rem 0.8rem;
 }
 
-// Standard subscription CTA button style
+// Standard subscription CTA button style for logged-in non-member users
 .subscription-cta-button {
   margin-top: 0.5rem;
+  background: var(--primary-high);
+  color: var(--primary-contrast);
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  font-size: var(--font-up-1);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  line-height: 1.4;
+}
+
+.subscription-cta-button:hover {
+  background: var(--primary-medium);
+  color: var(--primary-contrast);
 }
