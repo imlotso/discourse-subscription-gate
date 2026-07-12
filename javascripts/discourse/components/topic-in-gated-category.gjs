@@ -102,8 +102,8 @@ export default class TopicInGatedCategory extends Component {
 
   // Get effective group ID for current category
   _getEffectiveGroupId() {
-    if (this._categoryGroupMappings[this.categoryId]) {
-      return this._categoryGroupMappings[this.categoryId];
+    if (this._categoryGroupMappings[this.args.categoryId]) {
+      return this._categoryGroupMappings[this.args.categoryId];
     }
     return null;
   }
@@ -221,8 +221,10 @@ export default class TopicInGatedCategory extends Component {
       this.enabledGroups.length > 0 ||
       Object.keys(this._categoryGroupMappings).length > 0;
 
-    const gatedByCategory = this.enabledCategories.includes(this.categoryId);
-    const gatedByTag = this.tags?.some((t) => {
+    const gatedByCategory = this.enabledCategories.includes(
+      this.args.categoryId
+    );
+    const gatedByTag = this.args.tags?.some((t) => {
       const name = typeof t === "string" ? t : t.name;
       return this.enabledTags.includes(name);
     });
@@ -304,9 +306,6 @@ export default class TopicInGatedCategory extends Component {
   }
 
   get topicId() {
-    if (this.args && this.args.model) {
-      return this.args.model.id;
-    }
     return null;
   }
 
