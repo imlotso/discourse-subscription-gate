@@ -2,6 +2,7 @@
 import Component from "@glimmer/component";
 import { fn } from "@ember/helper";
 import { service } from "@ember/service";
+import bodyClass from "discourse/helpers/body-class";
 import routeAction from "discourse/helpers/route-action";
 import { i18n } from "discourse-i18n";
 
@@ -14,7 +15,7 @@ export default class TopicInGatedCategory extends Component {
     this._applySettings();
   }
 
-// Parse enabled category ID list (getter for lazy evaluation, matching official pattern)
+  // Parse enabled category ID list (getter for lazy evaluation, matching official pattern)
   get enabledCategories() {
     return (
       settings.enabled_categories
@@ -104,8 +105,6 @@ export default class TopicInGatedCategory extends Component {
     }
     return result;
   }
-
-  
 
   recalculate() {
     // No-op: lazy getters handle settings evaluation
@@ -356,6 +355,8 @@ export default class TopicInGatedCategory extends Component {
 
   <template>
     {{#if this.shouldShow}}
+      {{bodyClass "topic-in-gated-category"}}
+
       <div class="custom-gated-topic-container">
         <div class="custom-gated-topic-content">
           <div class="custom-gated-topic-content--header">
