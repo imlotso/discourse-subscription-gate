@@ -102,8 +102,8 @@ export default class TopicInGatedCategory extends Component {
 
   // Get effective group ID for current category
   _getEffectiveGroupId() {
-    if (this._categoryGroupMappings[this.args.categoryId]) {
-      return this._categoryGroupMappings[this.args.categoryId];
+    if (this._categoryGroupMappings[this.args?.categoryId]) {
+      return this._categoryGroupMappings[this.args?.categoryId];
     }
     return null;
   }
@@ -222,9 +222,9 @@ export default class TopicInGatedCategory extends Component {
       Object.keys(this._categoryGroupMappings).length > 0;
 
     const gatedByCategory = this.enabledCategories.includes(
-      this.args.categoryId
+      this.args?.categoryId
     );
-    const gatedByTag = this.args.tags?.some((t) => {
+    const gatedByTag = this.args?.tags?.some((t) => {
       const name = typeof t === "string" ? t : t.name;
       return this.enabledTags.includes(name);
     });
