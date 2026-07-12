@@ -1,8 +1,16 @@
+/* eslint-disable ember/no-classic-components, ember/require-tagless-components */
+import Component from "@ember/component";
+import { classNames } from "@ember-decorators/component";
 import TopicInGatedCategory from "../../components/topic-in-gated-category";
 
-<template>
-  <TopicInGatedCategory
-    @categoryId={{@outletArgs.model.category_id}}
-    @tags={{@outletArgs.model.tags}}
-  />
-</template>
+@classNames("topic-above-post-stream-outlet", "topic-in-gated-category")
+export default class TopicInGatedCategoryConnector extends Component {
+  <template>
+    {{! template-lint-disable no-args-paths }}
+    <TopicInGatedCategory
+      @categoryId={{this.args.outletArgs.model.category_id}}
+      @tags={{this.args.outletArgs.model.tags}}
+    />
+    {{! template-lint-enable no-args-paths }}
+  </template>
+}
