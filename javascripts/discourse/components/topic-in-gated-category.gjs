@@ -3,6 +3,7 @@ import Component from "@ember/component";
 import { tagName } from "@ember-decorators/component";
 import routeAction from "discourse/helpers/route-action";
 import { i18n } from "discourse-i18n";
+import { fn } from "@ember/helper";
 
 @tagName("")
 export default class TopicInGatedCategory extends Component {
