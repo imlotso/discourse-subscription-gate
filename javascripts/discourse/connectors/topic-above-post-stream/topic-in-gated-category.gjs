@@ -7,8 +7,8 @@ import TopicInGatedCategory from "../../components/topic-in-gated-category";
 export default class TopicInGatedCategoryConnector extends Component {
   <template>
     <TopicInGatedCategory
-      @categoryId={{this.args.outletArgs.model.category_id}}
-      @tags={{this.args.outletArgs.model.tags}}
+      @categoryId={{@outletArgs.model.category_id}}
+      @tags={{@outletArgs.model.tags}}
     />
   </template>
 }
