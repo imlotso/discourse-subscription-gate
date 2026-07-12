@@ -1,9 +1,9 @@
-/* eslint-disable ember/no-classic-components */
+/* eslint-disable ember/no-classic-components, discourse/no-onclick */
 import Component from "@ember/component";
+import { fn } from "@ember/helper";
 import { tagName } from "@ember-decorators/component";
 import routeAction from "discourse/helpers/route-action";
 import { i18n } from "discourse-i18n";
-import { fn } from "@ember/helper";
 
 @tagName("")
 export default class TopicInGatedCategory extends Component {
@@ -29,7 +29,9 @@ export default class TopicInGatedCategory extends Component {
   // FIX: empty string returns [] instead of [NaN]
   enabledTopicIds = (() => {
     const raw = settings.enabled_topic_ids;
-    if (!raw || raw.trim() === "") return [];
+    if (!raw || raw.trim() === "") {
+      return [];
+    }
     return raw
       .split("|")
       .map((id) => parseInt(id, 10))
@@ -42,7 +44,9 @@ export default class TopicInGatedCategory extends Component {
   // FIX: exempt_topic_ids whitelist -- empty string returns []
   enabledExemptTopicIds = (() => {
     const raw = settings.exempt_topic_ids;
-    if (!raw || raw.trim() === "") return [];
+    if (!raw || raw.trim() === "") {
+      return [];
+    }
     return raw
       .split("|")
       .map((id) => parseInt(id, 10))
@@ -253,7 +257,6 @@ export default class TopicInGatedCategory extends Component {
     this.set("hidden", false);
   }
 
-  @computed("hidden")
   get shouldShow() {
     return !this.hidden;
   }
@@ -376,7 +379,7 @@ export default class TopicInGatedCategory extends Component {
                   >
                     {{this.groupCtaLabel}}
                   </a>
-                {{! New behavior: subscription CTA for logged-in non-members }}
+                  {{! New behavior: subscription CTA for logged-in non-members }}
                 {{else}}
                   <a
                     href={{this.subscriptionCtaHref}}
