@@ -8,25 +8,39 @@ import { i18n } from "discourse-i18n";
 export default class TopicInGatedCategory extends Component {
   @service currentUser;
 
-  // Parse enabled category ID list
-  enabledCategories =
-    settings.enabled_categories
-      ?.split("|")
-      .map((id) => parseInt(id, 10))
-      .filter((id) => id) || [];
+  constructor(...args) {
+    super(...args);
+    this.recalculate();
+    this._applySettings();
+  }
+
+// Parse enabled category ID list (getter for lazy evaluation, matching official pattern)
+  get enabledCategories() {
+    return (
+      settings.enabled_categories
+        ?.split("|")
+        .map((id) => parseInt(id, 10))
+        .filter((id) => id) || []
+    );
+  }
 
   // Parse enabled tag list
-  enabledTags = settings.enabled_tags?.split("|").filter(Boolean) || [];
+  get enabledTags() {
+    return settings.enabled_tags?.split("|").filter(Boolean) || [];
+  }
 
   // Parse enabled group ID list
-  enabledGroups =
-    settings.enabled_groups
-      ?.split("|")
-      .map((id) => parseInt(id, 10))
-      .filter((id) => !isNaN(id)) || [];
+  get enabledGroups() {
+    return (
+      settings.enabled_groups
+        ?.split("|")
+        .map((id) => parseInt(id, 10))
+        .filter((id) => !isNaN(id)) || []
+    );
+  }
 
-  // FIX: empty string returns [] instead of [NaN]
-  enabledTopicIds = (() => {
+  // Parse enabled topic ID list
+  get enabledTopicIds() {
     const raw = settings.enabled_topic_ids;
     if (!raw || raw.trim() === "") {
       return [];
@@ -35,13 +49,31 @@ export default class TopicInGatedCategory extends Component {
       .split("|")
       .map((id) => parseInt(id, 10))
       .filter((id) => !isNaN(id) && id > 0);
-  })();
+  }
 
   // Parse enabled topic ID ranges [start, end]
-  enabledTopicIdRanges = [];
+  get enabledTopicIdRanges() {
+    const rangesStr = settings.enabled_topic_id_ranges;
+    if (!rangesStr || rangesStr.trim() === "") {
+      return [];
+    }
+    const pairs = rangesStr.split("|");
+    const ranges = [];
+    for (const pair of pairs) {
+      const parts = pair.split("-");
+      if (parts.length === 2) {
+        const start = parseInt(parts[0], 10);
+        const end = parseInt(parts[1], 10);
+        if (!isNaN(start) && !isNaN(end) && start <= end) {
+          ranges.push([start, end]);
+        }
+      }
+    }
+    return ranges;
+  }
 
-  // FIX: exempt_topic_ids whitelist -- empty string returns []
-  enabledExemptTopicIds = (() => {
+  // Parse exempt topic ID whitelist
+  get enabledExemptTopicIds() {
     const raw = settings.exempt_topic_ids;
     if (!raw || raw.trim() === "") {
       return [];
@@ -50,21 +82,15 @@ export default class TopicInGatedCategory extends Component {
       .split("|")
       .map((id) => parseInt(id, 10))
       .filter((id) => !isNaN(id) && id > 0);
-  })();
-
-  constructor(...args) {
-    super(...args);
-    this._parseCategoryGroupMappings();
-    this._parseTopicIdRanges();
   }
 
   // Parse category-to-group mappings
-  _parseCategoryGroupMappings() {
+  get _categoryGroupMappings() {
     const mappingsStr = settings.category_group_mappings;
     if (!mappingsStr) {
-      this._categoryGroupMappings = {};
-      return;
+      return {};
     }
+    const result = {};
     const pairs = mappingsStr.split("|");
     for (const pair of pairs) {
       const parts = pair.split(":");
@@ -72,45 +98,20 @@ export default class TopicInGatedCategory extends Component {
         const catId = parseInt(parts[0], 10);
         const groupId = parseInt(parts[1], 10);
         if (!isNaN(catId) && !isNaN(groupId)) {
-          this._categoryGroupMappings[catId] = groupId;
+          result[catId] = groupId;
         }
       }
     }
+    return result;
   }
 
-  // FIX: empty string returns []
-  _parseTopicIdRanges() {
-    const rangesStr = settings.enabled_topic_id_ranges;
-    if (!rangesStr || rangesStr.trim() === "") {
-      this.enabledTopicIdRanges = [];
-      return;
-    }
-    const pairs = rangesStr.split("|");
-    this.enabledTopicIdRanges = [];
-    for (const pair of pairs) {
-      const parts = pair.split("-");
-      if (parts.length === 2) {
-        const start = parseInt(parts[0], 10);
-        const end = parseInt(parts[1], 10);
-        if (!isNaN(start) && !isNaN(end) && start <= end) {
-          this.enabledTopicIdRanges.push([start, end]);
-        }
-      }
-    }
+  
+
+  recalculate() {
+    // No-op: lazy getters handle settings evaluation
   }
 
-  // Get effective group ID for current category
-  _getEffectiveGroupId() {
-    const catId = this.args?.outletArgs?.model?.category_id;
-    if (this._categoryGroupMappings[catId]) {
-      return this._categoryGroupMappings[catId];
-    }
-    return null;
-  }
-
-  didInsertElement() {
-    super.didInsertElement(...arguments);
-    this.recalculate();
+  _applySettings() {
     if (settings.gate_overlay_bg_color) {
       document.documentElement.style.setProperty(
         "--gated-topic-bg",
@@ -141,11 +142,6 @@ export default class TopicInGatedCategory extends Component {
     }
   }
 
-  didUpdateAttrs() {
-    super.didUpdateAttrs(...arguments);
-    this.recalculate();
-  }
-
   willDestroyElement() {
     super.willDestroyElement(...arguments);
     document.documentElement.style.removeProperty("--gated-topic-bg");
@@ -154,6 +150,15 @@ export default class TopicInGatedCategory extends Component {
     document.documentElement.style.removeProperty(
       "--top-content-overlay-opacity"
     );
+  }
+
+  // Get effective group ID for current category
+  _getEffectiveGroupId() {
+    const catId = this.args?.outletArgs?.model?.category_id;
+    if (this._categoryGroupMappings[catId]) {
+      return this._categoryGroupMappings[catId];
+    }
+    return null;
   }
 
   get effectiveGroupId() {
@@ -177,7 +182,7 @@ export default class TopicInGatedCategory extends Component {
     );
   }
 
-  // FIX: exempt whitelist check -- highest priority
+  // EXEMPT whitelist check -- highest priority, force bypass
   _isExemptTopic() {
     const topicId = this.topicId;
     if (!topicId) {
@@ -368,7 +373,7 @@ export default class TopicInGatedCategory extends Component {
           <div class="custom-gated-topic-content--cta">
             {{#if this.showGroupGate}}
               <div class="custom-gated-topic-content--cta__group">
-                {{! Backward compat: when group_custom_button_link is set, render old .btn-primary anchor }}
+                {{! Official behavior: only render CTA when group_custom_button_link is set }}
                 {{#if this.groupCustomButtonLink}}
                   <a
                     href={{this.groupCustomButtonLink}}
@@ -376,25 +381,10 @@ export default class TopicInGatedCategory extends Component {
                   >
                     {{this.groupCtaLabel}}
                   </a>
-                  {{! New behavior: subscription CTA for logged-in non-members }}
-                {{else}}
-                  <a
-                    href={{this.subscriptionCtaHref}}
-                    class="btn btn-large btn-subscription"
-                  >
-                    {{this.groupCtaLabel}}
-                  </a>
-                  {{#if this.showInfoButton}}
-                    <a
-                      href={{this.infoButtonHref}}
-                      class="btn btn-text info-button"
-                    >
-                      {{this.infoButtonLabel}}
-                    </a>
-                  {{/if}}
                 {{/if}}
               </div>
             {{else}}
+              {{! Non-group-gate: anonymous user sees signup/login }}
               <div class="custom-gated-topic-content--cta__signup">
                 <button
                   type="button"
