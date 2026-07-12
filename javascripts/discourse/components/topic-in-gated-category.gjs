@@ -364,7 +364,7 @@ export default class TopicInGatedCategory extends Component {
               <div class="custom-gated-topic-content--cta__group">
                 <button
                   type="button"
-                  class="btn btn-large btn-primary"
+                  class="btn btn-large btn-subscription"
                   onclick={{fn (routeAction "showCreateAccount")}}
                 >
                   {{this.groupCtaLabel}}
