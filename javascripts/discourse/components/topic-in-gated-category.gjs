@@ -320,6 +320,29 @@ export default class TopicInGatedCategory extends Component {
     return "/s";
   }
 
+  // Standard subscription CTA href for logged-in non-member users
+  // Fallback order: subscription_product_id > subscription_page_url > /s
+  get subscriptionCtaHref() {
+    if (settings.subscription_product_id) {
+      return "/s/" + settings.subscription_product_id;
+    }
+    if (settings.subscription_page_url) {
+      return settings.subscription_page_url;
+    }
+    return "/s";
+  }
+
+  // Show subscription CTA for logged-in users when group_custom_button_link is empty
+  get showSubscriptionCta() {
+    if (!this.currentUser) {
+      return false;
+    }
+    if (!settings.group_custom_button_link) {
+      return !!this.subscriptionCtaHref;
+    }
+    return false;
+  }
+
   // 次按钮 href（info_topic_id）
   get infoButtonHref() {
     if (settings.info_topic_id) {
@@ -368,6 +391,12 @@ export default class TopicInGatedCategory extends Component {
                   <DButton
                     @href={{settings.group_custom_button_link}}
                     class="btn-primary btn-large"
+                    @translatedLabel={{this.groupCtaLabel}}
+                  />
+                {{else if this.showSubscriptionCta}}
+                  <DButton
+                    @href={{this.subscriptionCtaHref}}
+                    class="btn-primary btn-large subscription-cta-button"
                     @translatedLabel={{this.groupCtaLabel}}
                   />
                 {{/if}}

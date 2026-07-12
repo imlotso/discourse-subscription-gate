@@ -32,6 +32,18 @@ module PageObjects
       def has_group_cta_href?(href)
         has_css?("#{SELECTOR} .custom-gated-topic-content--cta__group a[href='#{href}']")
       end
+
+      def has_subscription_cta_button?
+        has_css?("#{SELECTOR} .custom-gated-topic-content--cta__group .subscription-cta-button")
+      end
+
+      def has_no_subscription_cta_button?
+        has_no_css?("#{SELECTOR} .custom-gated-topic-content--cta__group .subscription-cta-button")
+      end
+
+      def has_subscription_cta_href?(href)
+        has_css?("#{SELECTOR} .custom-gated-topic-content--cta__group a[href='#{href}']")
+      end
     end
   end
 end
