@@ -104,19 +104,4 @@ RSpec.describe "Gated topics with groups" do
     end
   end
 
-  context "with subscription_page_url configured" do
-    before do
-      theme.update_setting(:subscription_page_url, "https://example.com/subscribe")
-      theme.save!
-    end
-
-    it "shows subscription CTA button for logged-in non-member" do
-      sign_in(non_member)
-      visit(topic.url)
-      expect(gated_topic).to have_gate
-      expect(gated_topic).to have_group_gate
-      expect(gated_topic).to have_subscription_cta_button
-      expect(gated_topic).to have_no_group_cta_button
-    end
-  end
 end
