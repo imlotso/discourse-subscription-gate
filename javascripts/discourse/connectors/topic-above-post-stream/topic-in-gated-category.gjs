@@ -1,5 +1,5 @@
-/* eslint-disable ember/no-classic-components, discourse/no-onclick */
-import Component from "@ember/component";
+/* eslint-disable discourse/no-onclick */
+import Component from "@glimmer/component";
 import { fn } from "@ember/helper";
 import { tagName } from "@ember-decorators/component";
 import routeAction from "discourse/helpers/route-action";
