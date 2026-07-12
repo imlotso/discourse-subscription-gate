@@ -59,7 +59,7 @@ RSpec.describe "Gated topics with groups" do
 
     before do
       second_group.add(second_group_member)
-      theme.update_setting(:enabled_groups, "#{group.id}|#{second_group.id}")
+      theme.update_setting(:enabled_groups, "{group.id}|{second_group.id}")
       theme.save!
     end
 
@@ -84,22 +84,27 @@ RSpec.describe "Gated topics with groups" do
     end
   end
 
-  context "with custom button link" do
+  context "with exempt_topic_ids" do
+    fab!(:exempt_topic) { Fabricate(:topic, category:) }
+
     before do
-      theme.update_setting(:group_custom_button_link, "https://example.com/subscribe")
+      theme.update_setting(:exempt_topic_ids, exempt_topic.id.to_s)
       theme.save!
     end
 
-    it "shows group gate with CTA button linking to custom URL" do
+    it "does not show gate for exempt topic regardless of user status" do
       sign_in(non_member)
-      visit(topic.url)
-      expect(gated_topic).to have_gate
-      expect(gated_topic).to have_group_cta_button
-      expect(gated_topic).to have_group_cta_href("https://example.com/subscribe")
+      visit(exempt_topic.url)
+      expect(gated_topic).to have_no_gate
+    end
+
+    it "does not show gate for exempt topic for anonymous users" do
+      visit(exempt_topic.url)
+      expect(gated_topic).to have_no_gate
     end
   end
 
-  context "with subscription_page_url but no group_custom_button_link" do
+  context "with subscription_page_url configured" do
     before do
       theme.update_setting(:subscription_page_url, "https://example.com/subscribe")
       theme.save!
