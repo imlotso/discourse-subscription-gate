@@ -2,11 +2,9 @@
 import Component from "@glimmer/component";
 import { fn } from "@ember/helper";
 import { service } from "@ember/service";
-import { tagName } from "@ember-decorators/component";
 import routeAction from "discourse/helpers/route-action";
 import { i18n } from "discourse-i18n";
 
-@tagName("")
 export default class TopicInGatedCategory extends Component {
   @service currentUser;
 
