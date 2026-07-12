@@ -10,8 +10,6 @@ import { i18n } from "discourse-i18n";
 export default class TopicInGatedCategory extends Component {
   @service currentUser;
 
-  hidden = true;
-
   // Parse enabled category ID list
   enabledCategories =
     settings.enabled_categories
@@ -152,7 +150,6 @@ export default class TopicInGatedCategory extends Component {
 
   willDestroyElement() {
     super.willDestroyElement(...arguments);
-    document.body.classList.remove("topic-in-gated-category");
     document.documentElement.style.removeProperty("--gated-topic-bg");
     document.documentElement.style.removeProperty("--gated-content-height");
     document.documentElement.style.removeProperty("--toc-dim-opacity");
@@ -207,18 +204,18 @@ export default class TopicInGatedCategory extends Component {
     return false;
   }
 
-  recalculate() {
+  get shouldShow() {
     if (settings.skip_gate_for_logged_in === "true" && this.currentUser) {
-      return;
+      return false;
     }
 
     // EXEMPT whitelist -- highest priority, force bypass
     if (this._isExemptTopic()) {
-      return;
+      return false;
     }
 
     if (this._isInValidGroup()) {
-      return;
+      return false;
     }
 
     const hasGroupGating =
@@ -239,7 +236,7 @@ export default class TopicInGatedCategory extends Component {
       this.enabledCategories.length > 0 || this.enabledTags.length > 0;
 
     if (!hasAnyCategoryOrTag && !hasGroupGating && !gatedByTopicId) {
-      return;
+      return false;
     }
 
     if (
@@ -248,25 +245,18 @@ export default class TopicInGatedCategory extends Component {
       !gatedByTag &&
       !gatedByTopicId
     ) {
-      return;
+      return false;
     }
 
     if (!hasAnyCategoryOrTag && !hasGroupGating && gatedByTopicId) {
-      document.body.classList.add("topic-in-gated-category");
-      this.set("hidden", false);
-      return;
+      return true;
     }
 
     if (!hasGroupGating && this.currentUser) {
-      return;
+      return false;
     }
 
-    document.body.classList.add("topic-in-gated-category");
-    this.set("hidden", false);
-  }
-
-  get shouldShow() {
-    return !this.hidden;
+    return true;
   }
 
   get showGroupGate() {
