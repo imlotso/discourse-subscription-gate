@@ -382,13 +382,13 @@ export default class TopicInGatedCategory extends Component {
                   href={{this.ctaHref}}
                   class="btn btn-large btn-primary custom-gated-topic-cta"
                 >
-                  {{theme-setting "group_cta_label_custom"}}
+                  {{this.groupCtaLabel}}
                 </a>
 
                 {{#if this.infoButtonHref}}
                   <div class="custom-gated-topic-secondary-actions">
                     <a href={{this.infoButtonHref}} class="btn btn-text">
-                      {{theme-setting "info_button_label_custom"}}
+                      {{this.infoButtonLabel}}
                     </a>
                   </div>
                 {{/if}}
@@ -398,7 +398,7 @@ export default class TopicInGatedCategory extends Component {
               <div class="custom-gated-topic-content--cta__signup">
                 <DButton
                   @action={{routeAction "showCreateAccount"}}
-                  @translatedLabel={{theme-setting "signup_cta_label_custom"}}
+                  @translatedLabel={{this.signupCtaLabel}}
                   class="btn-primary btn-large custom-gated-topic-cta"
                 />
               </div>
@@ -406,13 +406,13 @@ export default class TopicInGatedCategory extends Component {
               <div class="custom-gated-topic-secondary-actions">
                 <DButton
                   @action={{routeAction "showLogin"}}
-                  @translatedLabel={{theme-setting "login_cta_label_custom"}}
+                  @translatedLabel={{this.loginCtaLabel}}
                   class="btn btn-text"
                 />
 
                 {{#if this.infoButtonHref}}
                   <a href={{this.infoButtonHref}} class="btn btn-text">
-                    {{theme-setting "info_button_label_custom"}}
+                    {{this.infoButtonLabel}}
                   </a>
                 {{/if}}
               </div>
