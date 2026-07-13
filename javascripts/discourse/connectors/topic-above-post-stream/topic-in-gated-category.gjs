@@ -279,6 +279,16 @@ export default class TopicInGatedCategory extends Component {
     return settings.group_custom_button_link || "";
   }
 
+  get groupCtaHref() {
+    if (this.showGroupGate) {
+      if (settings.group_custom_button_link) {
+        return settings.group_custom_button_link;
+      }
+      return null;
+    }
+    return this.ctaHref;
+  }
+
   get ctaHref() {
     if (settings.subscription_product_id) {
       return `/s/${settings.subscription_product_id}`;
@@ -378,12 +388,14 @@ export default class TopicInGatedCategory extends Component {
           <div class="custom-gated-topic-content--cta">
             {{#if this.showGroupGate}}
               <div class="custom-gated-topic-content--cta__group">
-                <a
-                  href={{this.ctaHref}}
-                  class="btn btn-large btn-primary custom-gated-topic-cta"
-                >
-                  {{this.groupCtaLabel}}
-                </a>
+                {{#if this.groupCtaHref}}
+                  <a
+                    href={{this.groupCtaHref}}
+                    class="btn btn-large btn-primary custom-gated-topic-cta"
+                  >
+                    {{this.groupCtaLabel}}
+                  </a>
+                {{/if}}
 
                 {{#if this.infoButtonHref}}
                   <div class="custom-gated-topic-secondary-actions">
