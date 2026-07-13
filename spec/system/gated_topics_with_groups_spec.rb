@@ -76,11 +76,10 @@ RSpec.describe "Gated topics with groups" do
       theme.save!
     end
 
-    it "shows gate on any topic for user not in group" do
+    it "does not show gate when no category/tag/topic_id gating rules are configured" do
       sign_in(non_member)
       visit(topic.url)
-      expect(gated_topic).to have_gate
-      expect(gated_topic).to have_group_gate
+      expect(gated_topic).to have_no_gate
     end
   end
 

@@ -208,12 +208,14 @@ acceptance(
       settings.enabled_groups = "";
     });
 
-    test("gate shown on any topic when only groups configured", async function (assert) {
+    test("no gate shown when only groups configured without category/tag/topic_id", async function (assert) {
       await visit("/t/internationalization-localization/280");
 
       assert
         .dom(".custom-gated-topic-content")
-        .exists("gate shown even without category/tag settings");
+        .doesNotExist(
+          "no gate shown when only groups configured without category/tag/topic_id"
+        );
     });
   }
 );
