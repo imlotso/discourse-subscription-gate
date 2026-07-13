@@ -216,14 +216,12 @@ export default class TopicInGatedCategory extends Component {
       return false;
     }
 
+    // user is in an enabled group -- always bypass
     if (this._isInValidGroup()) {
       return false;
     }
 
-    const hasGroupGating =
-      this.enabledGroups.length > 0 ||
-      Object.keys(this._categoryGroupMappings).length > 0;
-
+    const hasGroupGating = this.enabledGroups.length > 0;
     const model = this.args?.outletArgs?.model;
     const categoryId = model?.category_id;
     const tags = model?.tags;
@@ -234,26 +232,43 @@ export default class TopicInGatedCategory extends Component {
       return this.enabledTags.includes(name);
     });
     const gatedByTopicId = this._matchesTopicId();
+
     const hasAnyCategoryOrTag =
       this.enabledCategories.length > 0 || this.enabledTags.length > 0;
 
+    // No gating configured at all -- never show gate
     if (!hasAnyCategoryOrTag && !hasGroupGating && !gatedByTopicId) {
       return false;
     }
 
-    if (
-      hasAnyCategoryOrTag &&
-      !gatedByCategory &&
-      !gatedByTag &&
-      !gatedByTopicId
-    ) {
+    // When categories/tags are configured, topic must match one
+    if (hasAnyCategoryOrTag && !gatedByCategory && !gatedByTag) {
       return false;
     }
 
-    if (!hasAnyCategoryOrTag && !hasGroupGating && gatedByTopicId) {
+    // When only groups are configured (no categories/tags), gate any logged-in user not in group
+    // Anonymous users always see the gate when group gating is configured
+    if (!hasAnyCategoryOrTag && !gatedByTopicId) {
+      if (!hasGroupGating) {
+        return false;
+      }
+      // hasGroupGating is true and no category/tag/topic gating -- show gate for logged-in non-members
+      // Anonymous users: always show gate
+      if (!this.currentUser) {
+        return true;
+      }
+      // Logged-in user not in group: show gate
       return true;
     }
 
+    // Has category/tag/topic gating:
+    // If topic doesn't match any gated category/tag/topic_id, don't show gate
+    if (!gatedByCategory && !gatedByTag && !gatedByTopicId) {
+      return false;
+    }
+
+    // Topic matches a gated category/tag/topic_id:
+    // If no groups configured, any logged-in user bypasses (official behavior)
     if (!hasGroupGating && this.currentUser) {
       return false;
     }
