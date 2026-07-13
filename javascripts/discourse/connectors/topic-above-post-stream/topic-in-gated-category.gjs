@@ -1,7 +1,7 @@
 /* eslint-disable discourse/no-onclick */
 import Component from "@glimmer/component";
-import { fn } from "@ember/helper";
 import { service } from "@ember/service";
+import DButton from "discourse/components/d-button";
 import bodyClass from "discourse/helpers/body-class";
 import routeAction from "discourse/helpers/route-action";
 import { i18n } from "discourse-i18n";
@@ -279,10 +279,9 @@ export default class TopicInGatedCategory extends Component {
     return settings.group_custom_button_link || "";
   }
 
-  // Unified subscription CTA href
-  get subscriptionCtaHref() {
+  get ctaHref() {
     if (settings.subscription_product_id) {
-      return "/s/" + settings.subscription_product_id;
+      return `/s/${settings.subscription_product_id}`;
     }
     if (settings.subscription_page_url) {
       return settings.subscription_page_url;
@@ -290,11 +289,14 @@ export default class TopicInGatedCategory extends Component {
     return "/s";
   }
 
+  // Backward compat for existing references/tests.
+  get subscriptionCtaHref() {
+    return this.ctaHref;
+  }
+
   get infoButtonHref() {
-    if (settings.info_topic_id) {
-      return "/t/-/" + settings.info_topic_id;
-    }
-    return null;
+    const topicId = settings.info_topic_id;
+    return topicId ? `/t/-/${topicId}` : null;
   }
 
   get showInfoButton() {
@@ -376,37 +378,43 @@ export default class TopicInGatedCategory extends Component {
           <div class="custom-gated-topic-content--cta">
             {{#if this.showGroupGate}}
               <div class="custom-gated-topic-content--cta__group">
-                {{! Official behavior: only render CTA when group_custom_button_link is set }}
-                {{#if this.groupCustomButtonLink}}
-                  <a
-                    href={{this.groupCustomButtonLink}}
-                    class="btn btn-primary group-custom-cta"
-                  >
-                    {{this.groupCtaLabel}}
-                  </a>
+                <a
+                  href={{this.ctaHref}}
+                  class="btn btn-large btn-primary custom-gated-topic-cta"
+                >
+                  {{theme-setting "group_cta_label_custom"}}
+                </a>
+
+                {{#if this.infoButtonHref}}
+                  <div class="custom-gated-topic-secondary-actions">
+                    <a href={{this.infoButtonHref}} class="btn btn-text">
+                      {{theme-setting "info_button_label_custom"}}
+                    </a>
+                  </div>
                 {{/if}}
               </div>
             {{else}}
               {{! Non-group-gate: anonymous user sees signup/login }}
               <div class="custom-gated-topic-content--cta__signup">
-                <button
-                  type="button"
-                  class="btn btn-large btn-primary sign-up-button"
-                  onclick={{fn (routeAction "showCreateAccount")}}
-                >
-                  {{this.signupCtaLabel}}
-                </button>
+                <DButton
+                  @action={{routeAction "showCreateAccount"}}
+                  @translatedLabel={{theme-setting "signup_cta_label_custom"}}
+                  class="btn-primary btn-large custom-gated-topic-cta"
+                />
               </div>
 
-              <div class="custom-gated-topic-content--cta__login">
-                <a
-                  href="#"
-                  id="cta-login-link"
-                  class="btn btn-text login-button"
-                  onclick={{fn (routeAction "showLogin")}}
-                >
-                  {{this.loginCtaLabel}}
-                </a>
+              <div class="custom-gated-topic-secondary-actions">
+                <DButton
+                  @action={{routeAction "showLogin"}}
+                  @translatedLabel={{theme-setting "login_cta_label_custom"}}
+                  class="btn btn-text"
+                />
+
+                {{#if this.infoButtonHref}}
+                  <a href={{this.infoButtonHref}} class="btn btn-text">
+                    {{theme-setting "info_button_label_custom"}}
+                  </a>
+                {{/if}}
               </div>
             {{/if}}
           </div>

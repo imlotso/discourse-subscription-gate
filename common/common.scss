@@ -49,6 +49,14 @@
   }
 }
 
+.custom-gated-topic-secondary-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  flex-wrap: wrap;
+}
+
 .topic-in-gated-category {
   overflow-y: hidden;
   height: 100%;
