@@ -6,6 +6,7 @@
 
 fi:
   theme_metadata:
+    name: "Subscription Gate"
     description: "Alueet, jotka ovat käytettävissä vain kirjautuneena"
   heading_text: "Tämä alue on vain jäsenille"
   subheading_text: "Luo tili, jotta voit katsoa tämän sisällön"

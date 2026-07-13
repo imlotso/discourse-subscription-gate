@@ -6,6 +6,7 @@
 
 hu:
   theme_metadata:
+    name: "Subscription Gate"
     description: "Csak bejelentkezett hozzáféréssel rendelkező kategóriák"
   heading_text: "Ez a terület csak a tagok számára elérhető"
   subheading_text: "Hozzon létre egy fiókot a tartalom megtekintéséhez"

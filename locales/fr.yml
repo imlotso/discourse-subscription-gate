@@ -6,6 +6,7 @@
 
 fr:
   theme_metadata:
+    name: "Subscription Gate"
     description: "Catégories avec accès connecté uniquement"
   heading_text: "Cette zone est réservée aux membres"
   subheading_text: "Créez un compte pour consulter ce contenu"

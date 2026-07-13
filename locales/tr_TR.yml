@@ -6,6 +6,7 @@
 
 tr_TR:
   theme_metadata:
+    name: "Subscription Gate"
     description: "Yalnızca giriş yapmış kişilerin erişebildiği kategoriler"
   heading_text: "Bu alan yalnızca üyelere özeldir"
   subheading_text: "Bu içeriği görüntülemek için bir hesap oluşturun"

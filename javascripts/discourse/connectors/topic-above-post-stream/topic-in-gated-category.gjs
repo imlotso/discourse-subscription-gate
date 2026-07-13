@@ -207,69 +207,56 @@ export default class TopicInGatedCategory extends Component {
   }
 
   get shouldShow() {
+    // 1. Skip gate setting: if enabled, all logged-in users bypass
     if (settings.skip_gate_for_logged_in === "true" && this.currentUser) {
       return false;
     }
 
-    // EXEMPT whitelist -- highest priority, force bypass
+    // 2. EXEMPT whitelist -- highest priority, force bypass regardless of anything
     if (this._isExemptTopic()) {
       return false;
     }
 
-    // user is in an enabled group -- always bypass
-    if (this._isInValidGroup()) {
-      return false;
-    }
-
-    const hasGroupGating = this.enabledGroups.length > 0;
+    // 3. MASTER GATING: Determine if THIS TOPIC should be gated at all.
+    //    ONLY category, tag, topic_id, and topic_id_range can trigger the gate.
+    //    enabled_groups is NOT a trigger -- it only controls user pass-through.
     const model = this.args?.outletArgs?.model;
     const categoryId = model?.category_id;
     const tags = model?.tags;
 
-    const gatedByCategory = this.enabledCategories.includes(categoryId);
-    const gatedByTag = tags?.some((t) => {
+    const isGatedCategory = this.enabledCategories.includes(categoryId);
+    const isGatedTag = tags?.some((t) => {
       const name = typeof t === "string" ? t : t.name;
       return this.enabledTags.includes(name);
     });
-    const gatedByTopicId = this._matchesTopicId();
+    const isGatedTopicId = this._matchesTopicId();
 
-    const hasAnyCategoryOrTag =
-      this.enabledCategories.length > 0 || this.enabledTags.length > 0;
-
-    // No gating configured at all -- never show gate
-    if (!hasAnyCategoryOrTag && !hasGroupGating && !gatedByTopicId) {
+    // No gating rules configured at all -- never show gate
+    if (
+      this.enabledCategories.length === 0 &&
+      this.enabledTags.length === 0 &&
+      this.enabledTopicIds.length === 0 &&
+      this.enabledTopicIdRanges.length === 0
+    ) {
       return false;
     }
 
-    // When categories/tags are configured, topic must match one
-    if (hasAnyCategoryOrTag && !gatedByCategory && !gatedByTag) {
+    // Topic must match at least ONE gating rule (category OR tag OR topic_id/range)
+    if (!isGatedCategory && !isGatedTag && !isGatedTopicId) {
       return false;
     }
 
-    // When only groups are configured (no categories/tags), gate any logged-in user not in group
-    // Anonymous users always see the gate when group gating is configured
-    if (!hasAnyCategoryOrTag && !gatedByTopicId) {
-      if (!hasGroupGating) {
-        return false;
-      }
-      // hasGroupGating is true and no category/tag/topic gating -- show gate for logged-in non-members
-      // Anonymous users: always show gate
-      if (!this.currentUser) {
-        return true;
-      }
-      // Logged-in user not in group: show gate
-      return true;
-    }
+    // At this point: the topic IS gated. Now check user permissions.
 
-    // Has category/tag/topic gating:
-    // If topic doesn't match any gated category/tag/topic_id, don't show gate
-    if (!gatedByCategory && !gatedByTag && !gatedByTopicId) {
+    // 4. USER PASS-THROUGH: Check if the current user is allowed to view.
+    //    enabled_groups and category_group_mappings determine pass-through only.
+    if (this._isInValidGroup()) {
       return false;
     }
 
-    // Topic matches a gated category/tag/topic_id:
-    // If no groups configured, any logged-in user bypasses (official behavior)
-    if (!hasGroupGating && this.currentUser) {
+    // If no groups are configured, any logged-in user bypasses (official behavior).
+    // Anonymous users always see the gate when the topic is gated.
+    if (this.enabledGroups.length === 0 && this.currentUser) {
       return false;
     }
 

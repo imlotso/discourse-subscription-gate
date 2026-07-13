@@ -6,6 +6,7 @@
 
 ja:
   theme_metadata:
+    name: "Subscription Gate"
     description: "ログインアクセス限定のカテゴリ"
   heading_text: "このエリアはメンバー専用です"
   subheading_text: "このコンテンツを表示するにはアカウントを作成してください"

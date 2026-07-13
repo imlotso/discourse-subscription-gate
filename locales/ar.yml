@@ -6,6 +6,7 @@
 
 ar:
   theme_metadata:
+    name: "Subscription Gate"
     description: "الفئات التي يمكن الوصول إليها عن طريق تسجيل الدخول فقط"
   heading_text: "هذه المنطقة مخصَّصة للأعضاء فقط"
   subheading_text: "أنشئ حسابًا لعرض هذا المحتوى"

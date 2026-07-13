@@ -6,6 +6,7 @@
 
 vi:
   theme_metadata:
+    name: "Subscription Gate"
     description: "Các chuyên mục chỉ dành cho thành viên đã đăng nhập"
   heading_text: "Khu vực này chỉ dành cho thành viên"
   subheading_text: "Tạo tài khoản để xem nội dung này."

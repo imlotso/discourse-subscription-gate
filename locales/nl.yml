@@ -6,6 +6,7 @@
 
 nl:
   theme_metadata:
+    name: "Subscription Gate"
     description: "Categorieën met alleen aangemelde toegang"
   heading_text: "Dit gedeelte is alleen voor leden"
   subheading_text: "Maak een account om deze content te bekijken"

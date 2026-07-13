@@ -1,7 +1,7 @@
 {
-  "about_url": "https://meta.discourse.org/t/gated-topics-in-category/225454",
-  "license_url": "https://github.com/discourse/discourse-gated-topics-in-category/blob/main/LICENSE",
+  "about_url": "https://github.com/imlotso/discourse-subscription-gate",
+  "license_url": "https://github.com/imlotso/discourse-subscription-gate/blob/main/LICENSE",
   "assets": {},
-  "name": "Gated Topics in Category",
+  "name": "Subscription Gate",
   "component": true
 }

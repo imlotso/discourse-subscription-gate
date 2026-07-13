@@ -1,6 +1,7 @@
 en:
   theme_metadata:
-    description: "Categories with logged-in access only"
+    name: "Subscription Gate"
+    description: "A subscription gate component that restricts topics based on categories, tags, and topic IDs, guiding users to subscribe."
   heading_text: "This area is for members only"
   subheading_text: "Create an account to view this content"
   signup_cta_label: "Sign Up"

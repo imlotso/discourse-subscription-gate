@@ -6,6 +6,7 @@
 
 ru:
   theme_metadata:
+    name: "Subscription Gate"
     description: "Категории с доступом только для зарегистрированных пользователей"
   heading_text: "Эта область только для участников"
   subheading_text: "Создайте аккаунт для просмотра этого контента"

@@ -6,6 +6,7 @@
 
 he:
   theme_metadata:
+    name: "Subscription Gate"
     description: "קטגוריות עם כניסה למערכת בלבד"
   heading_text: "האזור הזה הוא לחברים בלבד"
   subheading_text: "נא ליצור חשבון כדי לצפות בתוכן הזה"
