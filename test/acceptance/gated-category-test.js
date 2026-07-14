@@ -114,7 +114,7 @@ acceptance("Gated Topics - User NOT in Allowed Group", function (needs) {
     settings.enabled_groups = "";
   });
 
-  test("gate shown with group subheading and no CTA button", async function (assert) {
+  test("gate shown with group subheading and CTA button", async function (assert) {
     await visit("/t/internationalization-localization/280");
 
     assert
@@ -123,8 +123,14 @@ acceptance("Gated Topics - User NOT in Allowed Group", function (needs) {
 
     assert
       .dom(".custom-gated-topic-content--cta__group .btn-primary")
-      .doesNotExist(
-        "no group CTA button when group_custom_button_link is empty"
+      .exists("group CTA button shown via subscription_page_url fallback");
+
+    assert
+      .dom(".custom-gated-topic-content--cta__group .btn-primary")
+      .hasAttribute(
+        "href",
+        "/s",
+        "CTA falls back to subscription_page_url (/s)"
       );
 
     assert
@@ -134,7 +140,7 @@ acceptance("Gated Topics - User NOT in Allowed Group", function (needs) {
 });
 
 acceptance(
-  "Gated Topics - User NOT in Group with Custom Link",
+  "Gated Topics - User NOT in Group with Subscription Product",
   function (needs) {
     needs.user({
       groups: [{ id: 99, name: "other" }],
@@ -143,28 +149,28 @@ acceptance(
     needs.hooks.beforeEach(function () {
       settings.enabled_categories = "2";
       settings.enabled_groups = "42";
-      settings.group_custom_button_link = "https://example.com/subscribe";
+      settings.subscription_product_id = "prod_123";
     });
 
     needs.hooks.afterEach(function () {
       settings.enabled_categories = "";
       settings.enabled_groups = "";
-      settings.group_custom_button_link = "";
+      settings.subscription_product_id = "";
     });
 
-    test("gate shown with custom CTA button", async function (assert) {
+    test("gate shown with subscription product CTA button", async function (assert) {
       await visit("/t/internationalization-localization/280");
 
       assert
         .dom(".custom-gated-topic-content--cta__group .btn-primary")
-        .exists("group CTA button is shown when custom link is set");
+        .exists("group CTA button is shown when subscription product is set");
 
       assert
         .dom(".custom-gated-topic-content--cta__group .btn-primary")
         .hasAttribute(
           "href",
-          "https://example.com/subscribe",
-          "CTA uses custom button link"
+          "/s/prod_123",
+          "CTA links directly to the subscription product"
         );
     });
   }

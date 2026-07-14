@@ -26,12 +26,12 @@ RSpec.describe "Gated topics with groups" do
     expect(gated_topic).to have_no_gate
   end
 
-  it "shows group gate without CTA button for user not in allowed group" do
+  it "shows group gate with CTA button for user not in allowed group" do
     sign_in(non_member)
     visit(topic.url)
     expect(gated_topic).to have_gate
     expect(gated_topic).to have_group_gate
-    expect(gated_topic).to have_no_group_cta_button
+    expect(gated_topic).to have_group_cta_button
   end
 
   it "shows anonymous gate (not group gate) for anonymous users" do

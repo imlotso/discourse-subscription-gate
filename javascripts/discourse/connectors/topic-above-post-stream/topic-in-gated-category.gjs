@@ -279,13 +279,10 @@ export default class TopicInGatedCategory extends Component {
     return settings.group_custom_button_link || "";
   }
 
+  // Backward-compat alias: the template now binds this.ctaHref directly so the
+  // logged-in CTA always renders via the subscription product / page URL chain.
+  // Kept so external callers/tests referencing groupCtaHref keep working.
   get groupCtaHref() {
-    if (this.showGroupGate) {
-      if (settings.group_custom_button_link) {
-        return settings.group_custom_button_link;
-      }
-      return null;
-    }
     return this.ctaHref;
   }
 
@@ -387,10 +384,11 @@ export default class TopicInGatedCategory extends Component {
 
           <div class="custom-gated-topic-content--cta">
             {{#if this.showGroupGate}}
+              {{! Logged-in, not subscribed }}
               <div class="custom-gated-topic-content--cta__group">
-                {{#if this.groupCtaHref}}
+                {{#if this.ctaHref}}
                   <a
-                    href={{this.groupCtaHref}}
+                    href={{this.ctaHref}}
                     class="btn btn-large btn-primary custom-gated-topic-cta"
                   >
                     {{this.groupCtaLabel}}
@@ -406,7 +404,7 @@ export default class TopicInGatedCategory extends Component {
                 {{/if}}
               </div>
             {{else}}
-              {{! Non-group-gate: anonymous user sees signup/login }}
+              {{! Anonymous: primary sign-up + secondary (login / info) }}
               <div class="custom-gated-topic-content--cta__signup">
                 <DButton
                   @action={{routeAction "showCreateAccount"}}
@@ -419,7 +417,7 @@ export default class TopicInGatedCategory extends Component {
                 <DButton
                   @action={{routeAction "showLogin"}}
                   @translatedLabel={{this.loginCtaLabel}}
-                  class="btn btn-text"
+                  class="btn btn-text custom-gated-topic-cta"
                 />
 
                 {{#if this.infoButtonHref}}

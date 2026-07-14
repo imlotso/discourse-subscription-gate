@@ -84,6 +84,11 @@ info_button_label_custom:
   default: "订阅说明"
   description: "次按钮「订阅说明」的文案"
 
+info_topic_id:
+  type: string
+  default: ""
+  description: "「订阅说明」按钮跳转到的内部话题 ID；填写后未登录与已登录未订阅用户的主按钮下方均显示「订阅说明」文字按钮，留空则不显示该按钮"
+
 subscription_page_url:
   type: string
   default: "/s"
