@@ -59,7 +59,7 @@ RSpec.describe "Gated topics with groups" do
 
     before do
       second_group.add(second_group_member)
-      theme.update_setting(:enabled_groups, "{group.id}|{second_group.id}")
+      theme.update_setting(:enabled_groups, "#{group.id}|#{second_group.id}")
       theme.save!
     end
 

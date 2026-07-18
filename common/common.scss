@@ -32,13 +32,6 @@
       margin-bottom: 1rem;
     }
 
-    &__login {
-      #cta-login-link {
-        background: transparent;
-        color: var(--primary-high);
-      }
-    }
-
     &__group {
       margin-bottom: 1rem;
       display: flex;
@@ -49,12 +42,35 @@
   }
 }
 
+// Secondary action links row (login + info button)
 .custom-gated-topic-secondary-actions {
-  display: flex;
-  justify-content: center;
+  display: inline-flex;
   align-items: center;
   gap: 1em;
   flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+// Unified secondary link style: gray text, transparent background, no button chrome
+.custom-gated-topic-secondary-link {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--primary-medium);
+  font-size: var(--font-up-0);
+  text-decoration: underline;
+  cursor: pointer;
+  line-height: inherit;
+  font-family: inherit;
+
+  &:hover {
+    color: var(--primary);
+  }
+
+  &:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
 }
 
 .topic-in-gated-category {
@@ -107,6 +123,13 @@
       pointer-events: none;
     }
   }
+
+  // Apply TOC dim opacity to Discourse 2026.x topic-toc container
+  .topic-toc,
+  .d-toc,
+  .topic-list-toc {
+    opacity: var(--toc-dim-opacity, 1);
+  }
 }
 
 .gated-category-admin-info {
@@ -125,15 +148,6 @@
   ul {
     margin: 0.5rem 0 0 1rem;
   }
-}
-
-.info-button {
-  background: transparent;
-  color: var(--primary-medium);
-  border: 1px solid var(--primary-low);
-  border-radius: 4px;
-  font-size: var(--font-down-1);
-  padding: 0.25rem 0.8rem;
 }
 
 // Subscription CTA button (logged-in non-member)

@@ -4,6 +4,7 @@ import { service } from "@ember/service";
 import DButton from "discourse/components/d-button";
 import bodyClass from "discourse/helpers/body-class";
 import routeAction from "discourse/helpers/route-action";
+import { fn } from "@ember/helper";
 import { i18n } from "discourse-i18n";
 
 export default class TopicInGatedCategory extends Component {
@@ -12,6 +13,11 @@ export default class TopicInGatedCategory extends Component {
   constructor(...args) {
     super(...args);
     this.recalculate();
+    this._applySettings();
+  }
+
+  didReceiveArgs() {
+    super.didReceiveArgs(...arguments);
     this._applySettings();
   }
 
@@ -141,8 +147,8 @@ export default class TopicInGatedCategory extends Component {
     }
   }
 
-  willDestroyElement() {
-    super.willDestroyElement(...arguments);
+  willDestroy() {
+    super.willDestroy(...arguments);
     document.documentElement.style.removeProperty("--gated-topic-bg");
     document.documentElement.style.removeProperty("--gated-content-height");
     document.documentElement.style.removeProperty("--toc-dim-opacity");
@@ -396,11 +402,12 @@ export default class TopicInGatedCategory extends Component {
                 {{/if}}
 
                 {{#if this.infoButtonHref}}
-                  <div class="custom-gated-topic-secondary-actions">
-                    <a href={{this.infoButtonHref}} class="btn btn-text">
-                      {{this.infoButtonLabel}}
-                    </a>
-                  </div>
+                  <a
+                    href={{this.infoButtonHref}}
+                    class="custom-gated-topic-secondary-link"
+                  >
+                    {{this.infoButtonLabel}}
+                  </a>
                 {{/if}}
               </div>
             {{else}}
@@ -414,14 +421,18 @@ export default class TopicInGatedCategory extends Component {
               </div>
 
               <div class="custom-gated-topic-secondary-actions">
-                <DButton
-                  @action={{routeAction "showLogin"}}
-                  @translatedLabel={{this.loginCtaLabel}}
-                  class="btn btn-text custom-gated-topic-cta"
-                />
+                <a
+                  onclick={{fn (routeAction "showLogin")}}
+                  class="custom-gated-topic-secondary-link"
+                >
+                  {{this.loginCtaLabel}}
+                </a>
 
                 {{#if this.infoButtonHref}}
-                  <a href={{this.infoButtonHref}} class="btn btn-text">
+                  <a
+                    href={{this.infoButtonHref}}
+                    class="custom-gated-topic-secondary-link"
+                  >
                     {{this.infoButtonLabel}}
                   </a>
                 {{/if}}
