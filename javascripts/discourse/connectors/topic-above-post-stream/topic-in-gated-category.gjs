@@ -422,6 +422,7 @@ export default class TopicInGatedCategory extends Component {
 
               <div class="custom-gated-topic-secondary-actions">
                 <a
+                  role="button"
                   onclick={{fn (routeAction "showLogin")}}
                   class="custom-gated-topic-secondary-link"
                 >
