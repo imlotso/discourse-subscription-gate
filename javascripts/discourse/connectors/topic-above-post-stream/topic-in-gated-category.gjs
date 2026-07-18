@@ -1,10 +1,10 @@
 /* eslint-disable discourse/no-onclick */
 import Component from "@glimmer/component";
+import { fn } from "@ember/helper";
 import { service } from "@ember/service";
 import DButton from "discourse/components/d-button";
 import bodyClass from "discourse/helpers/body-class";
 import routeAction from "discourse/helpers/route-action";
-import { fn } from "@ember/helper";
 import { i18n } from "discourse-i18n";
 
 export default class TopicInGatedCategory extends Component {
@@ -14,6 +14,16 @@ export default class TopicInGatedCategory extends Component {
     super(...args);
     this.recalculate();
     this._applySettings();
+  }
+
+  willDestroy() {
+    super.willDestroy(...arguments);
+    document.documentElement.style.removeProperty("--gated-topic-bg");
+    document.documentElement.style.removeProperty("--gated-content-height");
+    document.documentElement.style.removeProperty("--toc-dim-opacity");
+    document.documentElement.style.removeProperty(
+      "--top-content-overlay-opacity"
+    );
   }
 
   didReceiveArgs() {
@@ -145,16 +155,6 @@ export default class TopicInGatedCategory extends Component {
         opacity.toString()
       );
     }
-  }
-
-  willDestroy() {
-    super.willDestroy(...arguments);
-    document.documentElement.style.removeProperty("--gated-topic-bg");
-    document.documentElement.style.removeProperty("--gated-content-height");
-    document.documentElement.style.removeProperty("--toc-dim-opacity");
-    document.documentElement.style.removeProperty(
-      "--top-content-overlay-opacity"
-    );
   }
 
   // Get effective group ID for current category
