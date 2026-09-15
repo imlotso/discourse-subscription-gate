@@ -184,9 +184,7 @@ export default class TopicInGatedCategory extends Component {
     if (mappedGroupId) {
       return userGroups.some((g) => g.id === mappedGroupId);
     }
-    return userGroups.some((g) =>
-      this.enabledGroups.includes(g.id)
-    );
+    return userGroups.some((g) => this.enabledGroups.includes(g.id));
   }
 
   // EXEMPT whitelist check -- highest priority, force bypass
