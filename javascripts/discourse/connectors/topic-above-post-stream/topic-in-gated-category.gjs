@@ -175,14 +175,16 @@ export default class TopicInGatedCategory extends Component {
   }
 
   _isInValidGroup() {
-    if (!this.currentUser?.groups?.length) {
+    const userGroups =
+      this.currentUser?.visibleGroups ?? this.currentUser?.groups;
+    if (!userGroups?.length) {
       return false;
     }
     const mappedGroupId = this._getEffectiveGroupId();
     if (mappedGroupId) {
-      return this.currentUser.groups.some((g) => g.id === mappedGroupId);
+      return userGroups.some((g) => g.id === mappedGroupId);
     }
-    return this.currentUser.groups.some((g) =>
+    return userGroups.some((g) =>
       this.enabledGroups.includes(g.id)
     );
   }
